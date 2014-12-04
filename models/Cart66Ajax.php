@@ -95,12 +95,12 @@ class Cart66Ajax {
   public static function shortcodeProductsTable() {
     global $wpdb;
     $prices = array();
-  	$types = array(); 
-  	//$options='';
+    $types = array();
     $postId = Cart66Common::postVal('id');
     $product = new Cart66Product();
     $products = $product->getModels("where id=$postId", "order by name");
     $data = array();
+}
     foreach($products as $p) {
       if($p->itemNumber==""){
         $type='id';
