@@ -394,32 +394,32 @@ class Cart66Common {
    * Strip slashes and escape sequences from POST values and returened the scrubbed value.
    * If the key is not set, return false.
    */
-  public static function postVal($key) {
+  public static function postVal($key)
+{
     $value = false;
-    if(isset($_POST[$key])) {
-      $value = self::deepTagClean($_POST[$key]);
+    if (isset($_POST[$key])) {
+        $value = self::deepTagClean($_POST[$key]);
     }
     return $value;
-  }
-  
-  public static function deepTagClean(&$data) {
-    if(is_array($data)) {
-      foreach($data as $key => $value) {
-        if(is_array($value)) {
-          $data[$key] = self::deepTagClean($value);
+}
+
+public static function deepTagClean(&$data)
+{
+    if (is_array($data)) {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = self::deepTagClean($value);
+            } else {
+                $value = strip_tags($value);
+                $data[$key] = preg_replace('/[<>\\]/', '', $value);
+            }
         }
-        else {
-          $value = strip_tags($value);
-          $data[$key] = preg_replace('/[<>\\\\]/', '', $value);
-        }
-      }
-    }
-    else {
-      $data= strip_tags($data);
-      $data = preg_replace('/[<>\\\\]/', '', $data);;
+    } else {
+        $data = strip_tags($data);
+        $data = preg_replace('/[<>\\]/', '', $data);;
     }
     return $data;
-  }
+}
   
 
   /**
