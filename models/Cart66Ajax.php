@@ -92,15 +92,41 @@ class Cart66Ajax {
     die();
   }
   
-  public static function shortcodeProductsTable() {
+ public static function shortcodeProductsTable() {
     global $wpdb;
     $prices = array();
-  	$types = array(); 
-  	//$options='';
+    $types = array();
     $postId = Cart66Common::postVal('id');
     $product = new Cart66Product();
     $products = $product->getModels("where id=$postId", "order by name");
     $data = array();
+}
+public static function postVal($key)
+{
+    $value = false;
+    if (isset($_POST[$key])) {
+        $value = self::deepTagClean($_POST[$key]);
+    }
+    return $value;
+}
+
+public static function deepTagClean(&$data)
+{
+    if (is_array($data)) {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = self::deepTagClean($value);
+            } else {
+                $value = strip_tags($value);
+                $data[$key] = preg_replace('/[<>\\]/', '', $value);
+            }
+        }
+    } else {
+        $data = strip_tags($data);
+        $data = preg_replace('/[<>\\]/', '', $data);;
+    }
+    return $data;
+}
     foreach($products as $p) {
       if($p->itemNumber==""){
         $type='id';
